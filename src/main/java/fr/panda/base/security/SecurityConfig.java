@@ -22,16 +22,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("admin").password("{noop}admin").roles("ADMIN","USER")
+                .withUser("admin").password("{noop}admin").roles("ADMIN", "USER")
                 .and()
                 .withUser("user").password("{noop}user").roles("USER");
+
     }
-    
+
     protected void configure(HttpSecurity http) throws Exception {
-       http.formLogin();
-       http.authorizeRequests().anyRequest().authenticated();
-        
-        
+        //http.formLogin();
+        //http.authorizeRequests().anyRequest().authenticated();
+
     }
 
 }
