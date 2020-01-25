@@ -1,27 +1,39 @@
 package fr.panda.base;
 
+import fr.panda.base.dao.MessageRepository;
 import fr.panda.base.dao.RoleRepository;
-import fr.panda.base.dao.UtilisateurRepository;
+import fr.panda.base.entities.Message;
 import fr.panda.base.entities.Role;
 import fr.panda.base.entities.Utilisateur;
+import fr.panda.base.service.CompteService;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class AuthSecJwtApplication implements CommandLineRunner{
     
     @Autowired
-    private UtilisateurRepository utilisateurRepository; 
+    private MessageRepository messageRepository; 
     
     @Autowired
     private RoleRepository roleRepository;
+    
+    @Autowired
+    private CompteService compteService; 
+    
+    @Bean // Pour etre executer et etre une bean Spring ce qui nous permet de l'injecter partout 
+    public BCryptPasswordEncoder getBCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
 	public static void main(String[] args) {
 		SpringApplication.run(AuthSecJwtApplication.class, args);
@@ -51,11 +63,19 @@ public class AuthSecJwtApplication implements CommandLineRunner{
             roles.add( roleRepository.getOne(n));
             System.out.println(roleRepository.getOne(n).getIntitule());
             util.setRoles(roles);
-            utilisateurRepository.save(util);
+            compteService.save(util);
         });
-        utilisateurRepository.findAll().forEach(System.out::println);
-        System.out.println("Fin de l'initialisation");
+        //compteService..forEach(System.out::println);
         
+        //initialisation de quelques messages : 
+        
+        System.out.println("Fin de l'initialisation");
+        Stream.of("Matheo Message" , "Teenou Message" , "Puppet Master Message" , "Major Motoko Message").
+                forEach((String message) -> {
+                    Message mes = new Message(null, message);
+                    messageRepository.save(mes);
+        });
+        messageRepository.findAll().forEach(System.out::println);
     }
 
 }

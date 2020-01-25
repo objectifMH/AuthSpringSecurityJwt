@@ -5,15 +5,13 @@
  */
 package fr.panda.base.dao;
 
-import fr.panda.base.entities.Role;
+import fr.panda.base.entities.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author gtu
  */
-public interface RoleRepository extends JpaRepository<Role, Long>{
-   
-    public Role findByIntitule(String intitule);
+public interface MessageRepository extends JpaRepository<Message, Long>{
     
 }
