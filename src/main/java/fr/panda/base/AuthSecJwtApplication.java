@@ -2,6 +2,7 @@ package fr.panda.base;
 
 import fr.panda.base.dao.MessageRepository;
 import fr.panda.base.dao.RoleRepository;
+import fr.panda.base.dao.UtilisateurRepository;
 import fr.panda.base.entities.Message;
 import fr.panda.base.entities.Role;
 import fr.panda.base.entities.Utilisateur;
@@ -29,6 +30,10 @@ public class AuthSecJwtApplication implements CommandLineRunner{
     
     @Autowired
     private CompteService compteService; 
+    
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
+            
     
     @Bean // Pour etre executer et etre une bean Spring ce qui nous permet de l'injecter partout 
     public BCryptPasswordEncoder getBCryptPasswordEncoder(){
@@ -76,6 +81,16 @@ public class AuthSecJwtApplication implements CommandLineRunner{
                     messageRepository.save(mes);
         });
         messageRepository.findAll().forEach(System.out::println);
+        Utilisateur sesam = new Utilisateur();
+            sesam.setLogin("meruem");
+            sesam.setMail("meruem@gmail.com");
+            sesam.setMdp("meruem");
+            List<Role> sesamRoles = new ArrayList();
+            sesamRoles.add(roleRepository.findByIntitule("ADMIN"));
+            sesam.setRoles(sesamRoles);
+            compteService.save(sesam);
+            utilisateurRepository.findAll().forEach(System.out::println);
+        
     }
 
 }
