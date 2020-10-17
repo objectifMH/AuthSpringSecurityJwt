@@ -51,7 +51,7 @@ public class AuthSecJwtApplication implements CommandLineRunner{
         System.out.println("Lancement de l'initialisation ...");
         //On va initialiser notre base de données H2 avec un premier jeu de données :
         //On entre les différents roles
-        Stream.of("USER" , "ADMIN" , "SUPERADMIN").forEach(nom->{
+        Stream.of("USER" , "ADMIN" , "SUPERADMIN", "NOROLE").forEach(nom->{
             Role role = new Role(null, nom);
             roleRepository.save(role);
         });
